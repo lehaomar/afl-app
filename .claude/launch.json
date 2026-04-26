@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "AFL Frontend",
+      "runtimeExecutable": "C:\\Users\\Ансар\\Desktop\\Paradaraya\\start-frontend.bat",
+      "runtimeArgs": [],
+      "port": 5173
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "AFL — Сезон 2026/2027",
+  "short_name": "AFL",
+  "description": "Любительская футбольная лига Paradaraya",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09111e",
+  "theme_color": "#09111e",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports"],
+  "lang": "ru"
+}
