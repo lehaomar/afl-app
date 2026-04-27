@@ -53,7 +53,7 @@ export default function StandingsTable() {
               <th className="text-center py-3 px-1 w-9">ГЗ</th>
               <th className="text-center py-3 px-1 w-9">ГП</th>
               <th className="text-center py-3 px-1 w-9">РМ</th>
-              <th className="text-center py-3 px-1 w-9 text-green-500 font-bold">О</th>
+              <th className="text-center py-3 px-1 w-9 font-bold" style={{ color: '#C0272D' }}>О</th>
             </tr>
           </thead>
           <tbody>
@@ -82,8 +82,9 @@ export default function StandingsTable() {
                   <tr
                     key={team.id}
                     className={`border-b border-afl-border/40 transition-colors ${
-                      isMyTeam ? 'bg-green-900/20' : idx % 2 === 0 ? 'bg-afl-surface/20' : ''
+                      isMyTeam ? '' : idx % 2 === 0 ? 'bg-afl-surface/20' : ''
                     }`}
+                    style={isMyTeam ? { background: 'rgba(139,26,26,0.18)' } : {}}
                   >
                     {/* Zone indicator + rank */}
                     <td className="pl-2 pr-1 py-3">
@@ -98,11 +99,11 @@ export default function StandingsTable() {
                     </td>
 
                     <td className="py-3 pr-2">
-                      <span className={`font-semibold text-sm ${isMyTeam ? 'text-green-400' : 'text-white'}`}>
+                      <span className="font-semibold text-sm" style={isMyTeam ? { color: '#C0272D' } : { color: '#fff' }}>
                         {team.name}
                       </span>
                       {isMyTeam && (
-                        <span className="ml-1.5 text-xs bg-green-700/40 text-green-400 px-1.5 py-0.5 rounded font-medium">
+                        <span className="ml-1.5 text-xs px-1.5 py-0.5 rounded font-medium" style={{ background: 'rgba(139,26,26,0.4)', color: '#C0272D' }}>
                           мы
                         </span>
                       )}
@@ -118,7 +119,7 @@ export default function StandingsTable() {
                       {team.goal_diff > 0 ? `+${team.goal_diff}` : team.goal_diff}
                     </td>
                     <td className="text-center py-3 px-1">
-                      <span className={`font-bold text-sm ${isMyTeam ? 'text-green-400' : 'text-white'}`}>
+                      <span className="font-bold text-sm" style={isMyTeam ? { color: '#C0272D' } : { color: '#fff' }}>
                         {team.points}
                       </span>
                     </td>
@@ -147,7 +148,7 @@ export default function StandingsTable() {
           <span>ГЗ — голы забитые</span>
           <span>ГП — голы пропущенные</span>
           <span>РМ — разница мячей</span>
-          <span className="text-green-500 font-semibold">О — очки</span>
+          <span className="font-semibold" style={{ color: '#C0272D' }}>О — очки</span>
         </div>
         <div className="flex gap-4 text-xs">
           <span className="flex items-center gap-1.5">

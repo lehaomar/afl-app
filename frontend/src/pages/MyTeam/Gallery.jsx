@@ -122,7 +122,8 @@ function PostCard({ post, onOpen }) {
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              className={`rounded-full transition-all ${i === current ? 'w-2 h-2 bg-blue-500' : 'w-1.5 h-1.5 bg-gray-600'}`}
+              className={`rounded-full transition-all ${i === current ? 'w-2 h-2' : 'w-1.5 h-1.5 bg-gray-600'}`}
+              style={i === current ? { background: '#C0272D' } : {}}
             />
           ))}
         </div>

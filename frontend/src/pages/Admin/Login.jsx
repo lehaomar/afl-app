@@ -49,7 +49,8 @@ export default function AdminLogin({ onLogin, onBack }) {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="admin"
               required
-              className="w-full bg-afl-elevated border border-afl-border rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-green-500 transition-colors"
+              className="w-full bg-afl-elevated border border-afl-border rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors"
+              onFocus={e => e.target.style.borderColor='#C0272D'} onBlur={e => e.target.style.borderColor=''}
             />
           </div>
           <div>
@@ -60,7 +61,8 @@ export default function AdminLogin({ onLogin, onBack }) {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full bg-afl-elevated border border-afl-border rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-green-500 transition-colors"
+              className="w-full bg-afl-elevated border border-afl-border rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors"
+              onFocus={e => e.target.style.borderColor='#C0272D'} onBlur={e => e.target.style.borderColor=''}
             />
           </div>
 
@@ -73,7 +75,8 @@ export default function AdminLogin({ onLogin, onBack }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors"
+            className="w-full disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors"
+            style={{ background: '#8B1A1A' }}
           >
             {loading ? 'Вход...' : 'Войти'}
           </button>

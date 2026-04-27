@@ -46,7 +46,7 @@ export default function App() {
   if (!authChecked) {
     return (
       <div className="min-h-dvh bg-afl-bg flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#C0272D', borderTopColor: 'transparent' }} />
       </div>
     );
   }

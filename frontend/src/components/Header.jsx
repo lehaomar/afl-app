@@ -1,14 +1,32 @@
 export default function Header({ onAdminClick, isAdmin }) {
   return (
-    <header className="sticky top-0 z-50 bg-gradient-to-r from-green-900 to-green-800 shadow-lg" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+    <header
+      className="sticky top-0 z-50 shadow-lg overflow-hidden"
+      style={{
+        paddingTop: 'env(safe-area-inset-top)',
+        backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.55) 100%), url('/paradaraya fon logo.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 40%',
+        borderBottom: '1px solid #5a1a1a',
+      }}
+    >
       <div className="flex items-center justify-between px-4 py-3">
-        <div>
-          <h1 className="text-xl font-black tracking-wide text-white leading-none">FC Paradaraya</h1>
-          <p className="text-green-300 text-xs font-medium tracking-wide">Сезон 2026/2027</p>
+        <div className="flex items-center gap-3">
+          <img
+            src="/paradaraya logo.jpg"
+            alt="FC Paradaraya"
+            className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+            style={{ border: '1.5px solid rgba(192,39,45,0.8)' }}
+          />
+          <div>
+            <h1 className="text-xl font-black tracking-wide text-white leading-none" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>FC Paradaraya</h1>
+            <p className="text-xs font-medium tracking-wide" style={{ color: '#f0a0a0', textShadow: '0 1px 3px rgba(0,0,0,0.9)' }}>Сезон 2026/2027</p>
+          </div>
         </div>
         <button
           onClick={onAdminClick}
-          className="flex items-center gap-1.5 text-green-300 hover:text-white transition-colors text-sm px-2 py-1 rounded"
+          className="flex items-center gap-1.5 hover:text-white transition-colors text-sm px-2 py-1 rounded"
+          style={{ color: '#f0a0a0', textShadow: '0 1px 3px rgba(0,0,0,0.9)' }}
           aria-label="Панель администратора"
         >
           {isAdmin ? (

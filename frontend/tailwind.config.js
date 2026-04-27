@@ -5,12 +5,12 @@ export default {
     extend: {
       colors: {
         afl: {
-          bg: '#09111e',
-          surface: '#111827',
-          elevated: '#1e293b',
-          border: '#2d3748',
-          green: '#22c55e',
-          'green-dark': '#16a34a',
+          bg: '#0C0808',
+          surface: '#150D0D',
+          elevated: '#1F1414',
+          border: '#321A1A',
+          crimson: '#8B1A1A',
+          'crimson-light': '#C0272D',
           gold: '#f59e0b',
           red: '#ef4444',
         },

@@ -103,7 +103,8 @@ export default function MediaAdmin() {
         <button
           onClick={handleUpload}
           disabled={selectedFiles.length === 0 || uploading}
-          className="w-full py-2.5 rounded-lg font-semibold text-sm transition-colors disabled:bg-gray-700 disabled:text-gray-500 bg-green-600 hover:bg-green-700 text-white"
+          className="w-full py-2.5 rounded-lg font-semibold text-sm transition-colors disabled:bg-gray-700 disabled:text-gray-500 text-white"
+          style={selectedFiles.length === 0 || uploading ? {} : { background: '#8B1A1A' }}
         >
           {uploading ? (
             <span className="flex items-center justify-center gap-2">
