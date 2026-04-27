@@ -1,75 +1,58 @@
-const CACHE_STATIC = 'afl-static-v3';
-const CACHE_API = 'afl-api-v3';
+// AFL Service Worker — network-first, no JS/CSS caching
+const CACHE = 'afl-v4';
+const SHELL = ['/', '/index.html', '/manifest.json'];
 
-const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-];
-
-// Install: cache static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_STATIC).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE).then(cache => cache.addAll(SHELL))
   );
   self.skipWaiting();
 });
 
-// Activate: clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((k) => k !== CACHE_STATIC && k !== CACHE_API)
-          .map((k) => caches.delete(k))
-      )
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
 });
 
-// Fetch strategy
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET and cross-origin requests
+  // Only handle GET, same-origin
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
 
-  // API calls: network first, fall back to cache
+  // JS/CSS bundles: always network (they have hash names, HTTP cache handles them)
+  if (url.pathname.startsWith('/assets/')) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
+  // API: network only
   if (url.pathname.startsWith('/api/')) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_API).then((cache) => cache.put(request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
+    event.respondWith(fetch(request));
     return;
   }
 
-  // Uploads: network first
+  // Uploads: network only
   if (url.pathname.startsWith('/uploads/')) {
-    event.respondWith(fetch(request).catch(() => caches.match(request)));
+    event.respondWith(fetch(request));
     return;
   }
 
-  // Static assets: cache first, network fallback
+  // Shell (/, /index.html, /manifest.json): network first, cache fallback
   event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-      return fetch(request).then((response) => {
+    fetch(request)
+      .then(response => {
         if (response.ok) {
           const clone = response.clone();
-          caches.open(CACHE_STATIC).then((cache) => cache.put(request, clone));
+          caches.open(CACHE).then(cache => cache.put(request, clone));
         }
         return response;
-      });
-    })
+      })
+      .catch(() => caches.match(request))
   );
 });
