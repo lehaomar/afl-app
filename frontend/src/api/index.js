@@ -9,8 +9,13 @@ async function request(path, opts = {}) {
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const res = await fetch(`${BASE}${path}`, { ...opts, headers });
-  const data = await res.json().catch(() => ({}));
 
+  const ct = res.headers.get('content-type') || '';
+  if (!ct.includes('application/json')) {
+    throw new Error(`Сервер недоступен (${res.status})`);
+  }
+
+  const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
   return data;
 }
