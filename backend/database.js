@@ -14,8 +14,9 @@ let _data = {
   matches: [],
   players: [],
   media: [],
+  posts: [],
   admins: [],
-  _seq: { teams: 1, matches: 1, players: 1, media: 1, admins: 1 },
+  _seq: { teams: 1, matches: 1, players: 1, media: 1, posts: 1, admins: 1 },
 };
 
 // Load from file
@@ -23,7 +24,9 @@ function load() {
   try {
     if (fs.existsSync(DB_PATH)) {
       _data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
-      if (!_data._seq) _data._seq = { teams: 1, matches: 1, players: 1, media: 1, admins: 1 };
+      if (!_data._seq) _data._seq = { teams: 1, matches: 1, players: 1, media: 1, posts: 1, admins: 1 };
+      if (!_data._seq.posts) _data._seq.posts = 1;
+      if (!_data.posts) _data.posts = [];
     }
   } catch (e) {
     console.error('DB load error:', e.message);

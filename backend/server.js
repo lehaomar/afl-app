@@ -40,6 +40,7 @@ app.use('/api/teams',   require('./routes/teams'));
 app.use('/api/matches', require('./routes/matches'));
 app.use('/api/players', require('./routes/players'));
 app.use('/api/media',   require('./routes/media'));
+app.use('/api/posts',   require('./routes/posts'));
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));

@@ -69,27 +69,34 @@ export const updatePlayer = (id, data) =>
 export const deletePlayer = (id) =>
   request(`/players/${id}`, { method: 'DELETE' });
 
-// ── Media ─────────────────────────────────────────────────
+// ── Media (legacy) ────────────────────────────────────────
 export const getMedia = () => request('/media');
+export const deleteMedia = (id) => request(`/media/${id}`, { method: 'DELETE' });
+export const updateMediaCaption = (id, caption) =>
+  request(`/media/${id}`, { method: 'PUT', body: JSON.stringify({ caption }) });
 
-export const uploadMedia = async (file, caption) => {
+// ── Posts (Instagram-style) ───────────────────────────────
+export const getPosts = () => request('/posts');
+
+export const createPost = async (files, caption) => {
   const token = getToken();
   const formData = new FormData();
-  formData.append('file', file);
+  files.forEach(f => formData.append('files', f));
   if (caption) formData.append('caption', caption);
 
-  const res = await fetch(`${BASE}/media`, {
+  const res = await fetch(`${BASE}/posts`, {
     method: 'POST',
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: formData,
   });
-  const data = await res.json();
+  const ct = res.headers.get('content-type') || '';
+  if (!ct.includes('application/json')) throw new Error(`Сервер недоступен (${res.status})`);
+  const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || 'Upload failed');
   return data;
 };
 
-export const updateMediaCaption = (id, caption) =>
-  request(`/media/${id}`, { method: 'PUT', body: JSON.stringify({ caption }) });
+export const updatePostCaption = (id, caption) =>
+  request(`/posts/${id}`, { method: 'PUT', body: JSON.stringify({ caption }) });
 
-export const deleteMedia = (id) =>
-  request(`/media/${id}`, { method: 'DELETE' });
+export const deletePost = (id) => request(`/posts/${id}`, { method: 'DELETE' });
