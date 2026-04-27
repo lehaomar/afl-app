@@ -131,7 +131,7 @@ function PostCard({ post, onOpen }) {
       {/* Caption + date */}
       <div className={`px-4 pb-4 ${total <= 1 ? 'pt-3' : 'pt-1'}`}>
         {post.caption && (
-          <p className="text-white text-sm leading-relaxed mb-1">{post.caption}</p>
+          <p className="text-white text-sm leading-relaxed mb-1 whitespace-pre-wrap">{post.caption}</p>
         )}
         <p className="text-gray-500 text-xs">{formatDate(post.created_at)}</p>
       </div>
@@ -218,7 +218,7 @@ function Lightbox({ post, startIndex, onClose }) {
       {/* Caption + date */}
       <div className="px-6 pb-6 text-center" onClick={e => e.stopPropagation()}>
         {post.caption && (
-          <p className="text-white/80 text-sm mb-1">{post.caption}</p>
+          <p className="text-white/80 text-sm mb-1 whitespace-pre-wrap">{post.caption}</p>
         )}
         <p className="text-white/30 text-xs">
           {new Date(post.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}

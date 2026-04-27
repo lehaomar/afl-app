@@ -60,12 +60,13 @@ export default function MediaAdmin() {
       <div className="bg-afl-elevated border border-afl-border rounded-xl p-4 mb-4">
         <h3 className="text-sm font-semibold text-gray-300 mb-3">Новый пост</h3>
 
-        <input
-          type="text"
+        <textarea
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
-          placeholder="Описание поста"
-          className="w-full bg-afl-surface border border-afl-border rounded-lg px-3 py-2 text-white text-sm mb-3 focus:outline-none focus:border-green-500"
+          onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) e.preventDefault(); }}
+          placeholder={"Описание поста\n(Shift+Enter — перенос строки)"}
+          rows={3}
+          className="w-full bg-afl-surface border border-afl-border rounded-lg px-3 py-2 text-white text-sm mb-3 focus:outline-none focus:border-green-500 resize-none"
         />
 
         <label className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-5 cursor-pointer transition-colors mb-3 ${selectedFiles.length > 0 ? 'border-green-500/70 bg-green-900/10' : 'border-afl-border hover:border-green-500/50 hover:bg-green-900/10'}`}>
@@ -169,13 +170,16 @@ function PostRow({ post, editCaption, setEditCaption, onSaveCaption, onDelete })
 
         {editCaption.id === post.id ? (
           <div className="flex gap-1">
-            <input
-              type="text"
+            <textarea
               value={editCaption.value}
               onChange={(e) => setEditCaption({ ...editCaption, value: e.target.value })}
-              onKeyDown={(e) => e.key === 'Enter' && onSaveCaption(post.id)}
-              className="flex-1 bg-afl-surface border border-green-500 rounded px-2 py-1 text-white text-sm focus:outline-none"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && e.shiftKey) return;
+                if (e.key === 'Enter') { e.preventDefault(); onSaveCaption(post.id); }
+              }}
+              className="flex-1 bg-afl-surface border border-green-500 rounded px-2 py-1 text-white text-sm focus:outline-none resize-none"
               placeholder="Описание поста"
+              rows={2}
               autoFocus
             />
             <button onClick={() => onSaveCaption(post.id)} className="text-green-400 px-2 text-lg">✓</button>
