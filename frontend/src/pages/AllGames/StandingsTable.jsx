@@ -4,13 +4,12 @@ import LoadingSpinner, { ErrorMessage } from '../../components/LoadingSpinner';
 
 const MY_TEAM = 'Paradaraya';
 
-// Zone config for 11 teams
-const ZONE_TOP    = 3; // top 3 — playoff zone (green)
-const ZONE_BOTTOM = 2; // bottom 2 — danger zone (red)
+// Top 8 go to Cup, 9th place and below do not
+const ZONE_TOP = 8;
 
 function getZone(idx, total) {
   if (idx < ZONE_TOP) return 'top';
-  if (idx >= total - ZONE_BOTTOM) return 'bottom';
+  if (idx >= ZONE_TOP) return 'bottom';
   return 'mid';
 }
 
@@ -61,8 +60,8 @@ export default function StandingsTable() {
             {standings.map((team, idx) => {
               const isMyTeam = team.name === MY_TEAM;
               const zone = getZone(idx, total);
-              const showTopDivider = idx === ZONE_TOP && total > ZONE_TOP;
-              const showBotDivider = idx === total - ZONE_BOTTOM && total > ZONE_BOTTOM;
+              const showTopDivider = false;
+              const showBotDivider = idx === ZONE_TOP && total > ZONE_TOP;
 
               return (
                 <>
@@ -153,11 +152,11 @@ export default function StandingsTable() {
         <div className="flex gap-4 text-xs">
           <span className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-            <span className="text-gray-500">Зона плей-офф</span>
+            <span className="text-gray-500">Топ-8 · идут на Кубок</span>
           </span>
           <span className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
-            <span className="text-gray-500">Зона вылета</span>
+            <span className="text-gray-500">С 9-го места · без Кубка</span>
           </span>
         </div>
       </div>
