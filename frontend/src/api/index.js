@@ -1,5 +1,7 @@
 // In production on Vercel: set VITE_API_URL=https://your-app.railway.app
-const BASE = (import.meta.env.VITE_API_URL || '') + '/api';
+const API_ORIGIN = import.meta.env.VITE_API_URL || '';
+const BASE = API_ORIGIN + '/api';
+export const uploadsUrl = (filename) => `${API_ORIGIN}/uploads/${filename}`;
 
 const getToken = () => localStorage.getItem('afl_token');
 

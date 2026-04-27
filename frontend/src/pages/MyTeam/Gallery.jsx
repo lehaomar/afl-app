@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getMedia } from '../../api';
+import { getMedia, uploadsUrl } from '../../api';
 import LoadingSpinner, { ErrorMessage } from '../../components/LoadingSpinner';
 
 export default function Gallery() {
@@ -57,7 +57,7 @@ export default function Gallery() {
 }
 
 function MediaItem({ item, onClick }) {
-  const url = `/uploads/${item.filename}`;
+  const url = uploadsUrl(item.filename);
 
   return (
     <button
@@ -96,7 +96,7 @@ function MediaItem({ item, onClick }) {
 }
 
 function Lightbox({ item, onClose }) {
-  const url = `/uploads/${item.filename}`;
+  const url = uploadsUrl(item.filename);
 
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose(); };
