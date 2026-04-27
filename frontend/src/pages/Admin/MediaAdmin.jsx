@@ -65,8 +65,8 @@ export default function MediaAdmin() {
           onChange={(e) => setCaption(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) e.preventDefault(); }}
           placeholder={"Описание поста\n(Shift+Enter — перенос строки)"}
-          rows={3}
-          className="w-full bg-afl-surface border border-afl-border rounded-lg px-3 py-2 text-white text-sm mb-3 focus:outline-none focus:border-green-500 resize-none"
+          rows={5}
+          className="w-full bg-afl-surface border border-afl-border rounded-lg px-3 py-2 text-white text-sm mb-3 focus:outline-none focus:border-green-500 resize-y min-h-[100px]"
         />
 
         <label className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-5 cursor-pointer transition-colors mb-3 ${selectedFiles.length > 0 ? 'border-green-500/70 bg-green-900/10' : 'border-afl-border hover:border-green-500/50 hover:bg-green-900/10'}`}>
