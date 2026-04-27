@@ -1,6 +1,6 @@
 export default function Header({ onAdminClick, isAdmin }) {
   return (
-    <header className="sticky top-0 z-50 bg-gradient-to-r from-green-900 to-green-800 shadow-lg">
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-green-900 to-green-800 shadow-lg" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <div className="flex items-center justify-between px-4 py-3">
         <div>
           <h1 className="text-2xl font-black tracking-widest text-white leading-none">AFL</h1>
