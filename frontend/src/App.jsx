@@ -56,7 +56,10 @@ export default function App() {
       <div className="flex flex-col min-h-dvh bg-afl-bg text-white">
         <Header onAdminClick={() => navigate(isAdmin ? 'admin' : 'admin-login')} isAdmin={isAdmin} />
 
-        <main className={`flex-1 overflow-auto ${!isAdminPage ? 'pb-20' : ''}`}>
+        <main
+          className="flex-1 overflow-auto"
+          style={!isAdminPage ? { paddingBottom: 'calc(4.5rem + env(safe-area-inset-bottom))' } : {}}
+        >
           {page === 'all-games'   && <AllGames />}
           {page === 'my-team'     && <MyTeam />}
           {page === 'admin-login' && (
