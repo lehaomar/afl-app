@@ -141,12 +141,14 @@ function PostCard({ post, onOpen }) {
 
 function Lightbox({ post, startIndex, onClose }) {
   const [current, setCurrent] = useState(startIndex);
+  const [showCaption, setShowCaption] = useState(true);
   const files = post.files || [];
   const total = files.length;
   const file = files[current];
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
     const handler = (e) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight') setCurrent(c => (c + 1) % total);
@@ -155,24 +157,29 @@ function Lightbox({ post, startIndex, onClose }) {
     document.addEventListener('keydown', handler);
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       document.removeEventListener('keydown', handler);
     };
   }, [total, onClose]);
 
   const safeTop = 'calc(env(safe-area-inset-top, 0px) + 12px)';
-  const safeBottom = 'calc(env(safe-area-inset-bottom, 0px) + 20px)';
+  const safeBottom = 'calc(env(safe-area-inset-bottom, 0px) + 16px)';
 
   return (
-    <div className="fixed inset-0 z-50" style={{ background: '#000' }}>
-
-      {/* Tap background to close */}
-      <div className="absolute inset-0" onClick={onClose} />
-
-      {/* Close button — respects safe area */}
+    <div
+      style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        width: '100%', height: '100%',
+        zIndex: 9999, background: '#000',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute right-4 z-30 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white active:bg-white/40"
-        style={{ top: safeTop }}
+        style={{ position: 'absolute', right: 16, top: safeTop, zIndex: 10001 }}
+        className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white active:bg-white/40"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12"/>
@@ -182,56 +189,63 @@ function Lightbox({ post, startIndex, onClose }) {
       {/* Counter */}
       {total > 1 && (
         <div
-          className="absolute left-1/2 -translate-x-1/2 z-30 bg-white/20 text-white text-xs px-3 py-1 rounded-full"
-          style={{ top: safeTop }}
+          style={{ position: 'absolute', top: safeTop, left: '50%', transform: 'translateX(-50%)', zIndex: 10001 }}
+          className="bg-white/20 text-white text-xs px-3 py-1 rounded-full"
         >
           {current + 1} / {total}
         </div>
       )}
 
-      {/* Image area — centered absolutely */}
-      <div className="absolute inset-0 flex items-center justify-center p-4">
-        {file && (
-          file.type === 'photo' ? (
-            <img
-              src={uploadsUrl(file.filename)}
-              alt=""
-              className="object-contain rounded"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-              onClick={e => e.stopPropagation()}
-            />
-          ) : (
-            <video
-              src={uploadsUrl(file.filename)}
-              controls autoPlay
-              className="rounded"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-              onClick={e => e.stopPropagation()}
-            />
-          )
-        )}
-      </div>
+      {/* Image — tap to toggle caption */}
+      {file && (
+        file.type === 'photo' ? (
+          <img
+            src={uploadsUrl(file.filename)}
+            alt=""
+            onClick={() => setShowCaption(s => !s)}
+            style={{
+              maxWidth: '100vw',
+              maxHeight: '100vh',
+              objectFit: 'contain',
+              display: 'block',
+              cursor: 'pointer',
+            }}
+          />
+        ) : (
+          <video
+            src={uploadsUrl(file.filename)}
+            controls autoPlay
+            style={{ maxWidth: '100vw', maxHeight: '100vh', display: 'block' }}
+          />
+        )
+      )}
 
       {/* Carousel arrows */}
       {total > 1 && (
         <>
           <button
             onClick={() => setCurrent(c => (c - 1 + total) % total)}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white text-2xl active:bg-black/70"
+            style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', zIndex: 10001 }}
+            className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white text-2xl"
           >‹</button>
           <button
             onClick={() => setCurrent(c => (c + 1) % total)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white text-2xl active:bg-black/70"
+            style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', zIndex: 10001 }}
+            className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white text-2xl"
           >›</button>
         </>
       )}
 
-      {/* Caption + date at bottom — respects safe area */}
-      {(post.caption || total > 1) && (
+      {/* Caption — togglable by tapping photo */}
+      {showCaption && (post.caption || total > 1) && (
         <div
-          className="absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black/90 to-transparent px-4 pt-10"
-          style={{ paddingBottom: safeBottom }}
-          onClick={e => e.stopPropagation()}
+          style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
+            paddingBottom: safeBottom,
+            paddingLeft: 16, paddingRight: 16, paddingTop: 48,
+            zIndex: 10000,
+          }}
         >
           {post.caption && (
             <p className="text-white text-sm leading-relaxed whitespace-pre-wrap mb-1">{post.caption}</p>
