@@ -1,5 +1,5 @@
-const CACHE_STATIC = 'afl-static-v1';
-const CACHE_API = 'afl-api-v1';
+const CACHE_STATIC = 'afl-static-v3';
+const CACHE_API = 'afl-api-v3';
 
 const STATIC_ASSETS = [
   '/',
