@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { getMedia, uploadMedia, deleteMedia, updateMediaCaption } from '../../api';
+import { getMedia, uploadMedia, deleteMedia, updateMediaCaption, uploadsUrl } from '../../api';
 
 export default function MediaAdmin() {
   const [media, setMedia] = useState([]);
@@ -114,7 +114,7 @@ export default function MediaAdmin() {
                 <div className="w-14 h-14 rounded-lg overflow-hidden bg-afl-surface flex-shrink-0">
                   {item.type === 'photo' ? (
                     <img
-                      src={`/uploads/${item.filename}`}
+                      src={uploadsUrl(item.filename)}
                       alt=""
                       className="w-full h-full object-cover"
                     />
