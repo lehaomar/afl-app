@@ -159,84 +159,97 @@ function Lightbox({ post, startIndex, onClose }) {
     };
   }, [total, onClose]);
 
+  const safeTop = 'calc(env(safe-area-inset-top, 0px) + 12px)';
+  const safeBottom = 'calc(env(safe-area-inset-bottom, 0px) + 20px)';
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: '#000' }}
-      onClick={onClose}
-    >
-      {/* Close button */}
+    <div className="fixed inset-0 z-50" style={{ background: '#000' }}>
+
+      {/* Tap background to close */}
+      <div className="absolute inset-0" onClick={onClose} />
+
+      {/* Close button — respects safe area */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-20 w-9 h-9 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20"
+        className="absolute right-4 z-30 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white active:bg-white/40"
+        style={{ top: safeTop }}
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12"/>
         </svg>
       </button>
 
       {/* Counter */}
       {total > 1 && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-white/10 text-white text-xs px-3 py-1 rounded-full">
+        <div
+          className="absolute left-1/2 -translate-x-1/2 z-30 bg-white/20 text-white text-xs px-3 py-1 rounded-full"
+          style={{ top: safeTop }}
+        >
           {current + 1} / {total}
         </div>
       )}
 
-      {/* Media — stops click-to-close */}
-      <div className="relative w-full h-full flex items-center justify-center" onClick={e => e.stopPropagation()}>
+      {/* Image area — centered absolutely */}
+      <div className="absolute inset-0 flex items-center justify-center p-4">
         {file && (
           file.type === 'photo' ? (
             <img
               src={uploadsUrl(file.filename)}
               alt=""
-              className="max-w-full max-h-screen object-contain"
-              style={{ maxHeight: '100dvh' }}
+              className="object-contain rounded"
+              style={{ maxWidth: '100%', maxHeight: '100%' }}
+              onClick={e => e.stopPropagation()}
             />
           ) : (
             <video
               src={uploadsUrl(file.filename)}
               controls autoPlay
-              className="max-w-full"
-              style={{ maxHeight: '100dvh' }}
+              className="rounded"
+              style={{ maxWidth: '100%', maxHeight: '100%' }}
+              onClick={e => e.stopPropagation()}
             />
           )
         )}
-
-        {/* Carousel arrows */}
-        {total > 1 && (
-          <>
-            <button
-              onClick={() => setCurrent(c => (c - 1 + total) % total)}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white text-2xl"
-            >‹</button>
-            <button
-              onClick={() => setCurrent(c => (c + 1) % total)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white text-2xl"
-            >›</button>
-          </>
-        )}
-
-        {/* Caption overlay at bottom */}
-        {(post.caption || total > 1) && (
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 pt-8 pb-6">
-            {post.caption && (
-              <p className="text-white text-sm leading-relaxed whitespace-pre-wrap mb-1">{post.caption}</p>
-            )}
-            <p className="text-white/50 text-xs">
-              {new Date(post.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </p>
-            {total > 1 && (
-              <div className="flex justify-center gap-1.5 mt-3">
-                {files.map((_, i) => (
-                  <button key={i} onClick={() => setCurrent(i)}
-                    className={`rounded-full transition-all ${i === current ? 'w-2 h-2 bg-white' : 'w-1.5 h-1.5 bg-white/40'}`}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </div>
+
+      {/* Carousel arrows */}
+      {total > 1 && (
+        <>
+          <button
+            onClick={() => setCurrent(c => (c - 1 + total) % total)}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white text-2xl active:bg-black/70"
+          >‹</button>
+          <button
+            onClick={() => setCurrent(c => (c + 1) % total)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white text-2xl active:bg-black/70"
+          >›</button>
+        </>
+      )}
+
+      {/* Caption + date at bottom — respects safe area */}
+      {(post.caption || total > 1) && (
+        <div
+          className="absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black/90 to-transparent px-4 pt-10"
+          style={{ paddingBottom: safeBottom }}
+          onClick={e => e.stopPropagation()}
+        >
+          {post.caption && (
+            <p className="text-white text-sm leading-relaxed whitespace-pre-wrap mb-1">{post.caption}</p>
+          )}
+          <p className="text-white/50 text-xs mb-2">
+            {new Date(post.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </p>
+          {total > 1 && (
+            <div className="flex justify-center gap-1.5">
+              {files.map((_, i) => (
+                <button key={i} onClick={() => setCurrent(i)}
+                  className={`rounded-full transition-all ${i === current ? 'w-2 h-2 bg-white' : 'w-1.5 h-1.5 bg-white/40'}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
