@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
 import { getMatches, getTeams, createMatch, updateMatch, deleteMatch } from '../../api';
 
+const STADIUMS = [
+  { value: 'Қайрат', label: 'Қайрат — ул. Абиша Кекилбайулы, 30' },
+  { value: 'ЦСКА',   label: 'ЦСКА — ул. Сатпаева, 6Б/2' },
+];
+
 const EMPTY_FORM = {
   round: '', home_team_id: '', away_team_id: '',
-  home_score: '', away_score: '', match_date: '', match_time: '', played: false,
+  home_score: '', away_score: '', match_date: '', match_time: '', played: false, stadium: '',
 };
 
 export default function MatchesAdmin() {
@@ -61,6 +66,7 @@ export default function MatchesAdmin() {
       match_date: match.match_date || '',
       match_time: match.match_time || '',
       played: !!match.played,
+      stadium: match.stadium || '',
     });
     setEditId(match.id);
     setShowForm(true);
@@ -166,6 +172,20 @@ export default function MatchesAdmin() {
               onChange={(e) => setForm({ ...form, match_time: e.target.value })}
               className="w-full bg-afl-surface border border-afl-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-green-500"
             />
+          </div>
+
+          <div>
+            <label className="text-xs text-gray-400 block mb-1">Стадион</label>
+            <select
+              value={form.stadium}
+              onChange={(e) => setForm({ ...form, stadium: e.target.value })}
+              className="w-full bg-afl-surface border border-afl-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-green-500"
+            >
+              <option value="">— Не указан —</option>
+              {STADIUMS.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
           </div>
 
           <label className="flex items-center gap-2 cursor-pointer">

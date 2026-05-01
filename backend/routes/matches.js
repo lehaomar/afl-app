@@ -26,7 +26,7 @@ router.get('/standings', (req, res) => {
 });
 
 router.post('/', requireAuth, (req, res) => {
-  const { round, home_team_id, away_team_id, home_score, away_score, match_date, match_time, played } = req.body;
+  const { round, home_team_id, away_team_id, home_score, away_score, match_date, match_time, played, stadium } = req.body;
 
   if (!round || !home_team_id || !away_team_id)
     return res.status(400).json({ error: 'Round, home team and away team are required' });
@@ -44,12 +44,13 @@ router.post('/', requireAuth, (req, res) => {
     match_date: match_date || null,
     match_time: match_time || null,
     played: isPlayed,
+    stadium: stadium || null,
   });
   res.status(201).json(withTeams(match));
 });
 
 router.put('/:id', requireAuth, (req, res) => {
-  const { round, home_team_id, away_team_id, home_score, away_score, match_date, match_time, played } = req.body;
+  const { round, home_team_id, away_team_id, home_score, away_score, match_date, match_time, played, stadium } = req.body;
 
   const existing = db.findById('matches', req.params.id);
   if (!existing) return res.status(404).json({ error: 'Match not found' });
@@ -64,6 +65,7 @@ router.put('/:id', requireAuth, (req, res) => {
     match_date: match_date || null,
     match_time: match_time || null,
     played: isPlayed,
+    stadium: stadium || null,
   });
   res.json(withTeams(match));
 });

@@ -4,6 +4,11 @@ import LoadingSpinner, { ErrorMessage } from '../../components/LoadingSpinner';
 
 const MY_TEAM = 'Paradaraya';
 
+const STADIUM_ADDRESS = {
+  'Қайрат': 'ул. Абиша Кекилбайулы, 30',
+  'ЦСКА':   'ул. Сатпаева, 6Б/2',
+};
+
 export default function Calendar() {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -110,6 +115,18 @@ function CalendarCard({ match }) {
       <div className="flex-1">
         <div className="text-xs text-gray-500 mb-0.5">{isHome ? 'Дома' : 'В гостях'}</div>
         <div className="font-semibold text-white">vs {opponent}</div>
+        {match.stadium && (
+          <div className="flex items-center gap-1 mt-1">
+            <svg className="w-3 h-3 flex-shrink-0" style={{ color: '#C0272D' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span className="text-xs text-gray-400">
+              <span className="text-gray-300 font-medium">{match.stadium}</span>
+              {STADIUM_ADDRESS[match.stadium] && `, ${STADIUM_ADDRESS[match.stadium]}`}
+            </span>
+          </div>
+        )}
       </div>
 
       {result ? (
