@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { getStandings, getMatches } from '../../api';
 import LoadingSpinner, { ErrorMessage } from '../../components/LoadingSpinner';
 
@@ -206,16 +206,15 @@ export default function StandingsTable() {
               const showBotDivider = idx === ZONE_TOP && total > ZONE_TOP;
 
               return (
-                <>
+                <Fragment key={team.id}>
                   {showBotDivider && (
-                    <tr key={`div-bot-${idx}`}>
+                    <tr>
                       <td colSpan={10} className="p-0">
                         <div className="border-t border-dashed border-red-700/40" />
                       </td>
                     </tr>
                   )}
                   <tr
-                    key={team.id}
                     className={`border-b border-afl-border/40 transition-colors cursor-pointer hover:bg-white/5 ${
                       isMyTeam ? '' : idx % 2 === 0 ? 'bg-afl-surface/20' : ''
                     }`}
@@ -257,7 +256,7 @@ export default function StandingsTable() {
                       </span>
                     </td>
                   </tr>
-                </>
+                </Fragment>
               );
             })}
           </tbody>
